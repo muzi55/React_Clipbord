@@ -2,7 +2,8 @@
 import React, { useState } from "react";
 
 const Clipboard = (): JSX.Element => {
-  const [input, setInput] = useState<string>();
+  const [input, setInput] = useState<string>("");
+  const [contentText, setContentText] = useState<string>("이 텍스트가 복사됩니다.");
 
   const onClickClipboard = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     const contentText = e.currentTarget.textContent;
@@ -19,9 +20,23 @@ const Clipboard = (): JSX.Element => {
     }
   };
 
+  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setContentText(input);
+  };
+
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInput(e.target.value);
+  };
+
   return (
     <>
-      <div onClick={onClickClipboard}>이 텍스트가 복사됩니다.</div>
+      <div onClick={onClickClipboard}>{contentText}</div>
+
+      <form onSubmit={onSubmit}>
+        <input type="text" className="border border-black" onChange={onChange} value={input} placeholder="복사할 문구를 써주세요" />
+        <button className="border border-black">갱신</button>
+      </form>
     </>
   );
 };
